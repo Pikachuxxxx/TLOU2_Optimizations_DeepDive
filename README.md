@@ -9,6 +9,8 @@ In the first draft I just make conceptual explanations of the points they mentio
 
 I've also tried to add as many defitnions to glossary as possible and I will tryo add some notes on GPU architecture especiall y how WGPs, TDS/GDS are stored and how caches work behind the scenes.
 
+[PDF Notes](https://github.com/Pikachuxxxx/TLOU2_Optimizations_DeepDive/blob/master/TLOU2OptimizationsYTVideoNotes.pdf)
+
 ## V1
 The V1 just contains my notes in .tex and .pdf format.
 
