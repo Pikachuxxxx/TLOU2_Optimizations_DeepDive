@@ -187,10 +187,13 @@ So what's happening here, is like we previous optimizations when we have memory 
 	\item \textit{GBuffer is huge so there's a lot of async work that goes on with it for soo long it just runs on it's own for some time}
 	
 	\item \textit{We could never hit full GPR allocation in our GBuffer pass due to being parameter cache bound}
+	
+	\item \textit{since PS can't fill the GPRs might as well spawn extra VS to do some ALU and mem ops}
 \end{itemize}
 
-Okay the second sentence is daunting! What does it mean? - 
- 
+Okay the second sentence is daunting! What does it mean? - it means that the shader is bouind y chaches like Texture cache, Constant cache,  etc where it waits on reads from parameters like texture reads and uniforms buffers etc. so it's hard to optimize it further and during this time we can just invoke more VS invocations and have it overlap with PS invocation and basically do the VS mem and ALU ops for free, and maybe even push some ALU from PS to VS as well.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection*{Glossary}
 Some definitions of the terms used in the doc: \\
