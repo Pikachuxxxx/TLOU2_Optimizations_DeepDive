@@ -193,7 +193,9 @@ So what's happening here, is like we previous optimizations when we have memory 
 	\item \textit{since PS can't fill the GPRs might as well spawn extra VS to do some ALU and mem ops}
 \end{itemize}
 
-Okay the second sentence is daunting! What does it mean? - it means that the shader is bound by caches like Texture cache, Constant cache, etc. \cite{caches} where it waits on reads from parameters like texture reads and uniforms buffers etc. so it's hard to optimize it further and during this time we can just invoke more VS invocations and have it overlap with PS invocation and basically do the VS mem and ALU ops for free, and maybe even push some ALU from PS to VS as well.
+Okay the second sentence is daunting! What does it mean? - The parameter cache (sometimes called the interpolator cache or post-transform cache or the VPC - vertex parameter cache in QC GPU's) is a specialized fast-access storage cache in the GPU. Its purpose is to store the outputs of a vertex shader—things like position, normal, texture coordinates, and any other user-defined out variables that must be passed to the rasterizer next. It's a small cache block that stores the steam output from VS transform feedback APIs. If you output too many parameters per vertex, your VPC fills up quickly. It can lead to register spill or write back to the L2 cache for storage and also bound the rasterizes which in-turn limits the number of GPRs available for VS wave usage, also if VPC is filled up it can cause the GPU to stall and kill active waves and decrease occupancy. So GPR allocation can also suffer this way. 
+
+So since we can't do anything else, during this time we can just invoke more VS invocations and have it overlap with PS invocation and basically do the VS mem and ALU ops for free, and maybe even push some ALU from PS to VS as well.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
